@@ -82,18 +82,6 @@ class HomescreenState extends State<Homescreen> {
           SizedBox(
             height: 80,
           ),
-          // FutureBuilder(
-          //     future: getCocktails(),
-          //     builder: (context, snapshot) {
-          //       if (snapshot.connectionState == ConnectionState.waiting) {
-          //         return const Center(
-          //           child: CircularProgressIndicator(),
-          //         );
-          //       }
-          //     }),
-          // const SizedBox(
-          //   height: 80,
-          // ),
           FutureBuilder(
             future: getCocktails(),
             builder: (context, snapshot) {

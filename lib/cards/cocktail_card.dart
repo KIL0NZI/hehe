@@ -6,137 +6,69 @@ class CocktailCard extends StatelessWidget {
   final String thumbnailUrl;
   final String difficulty;
 
-  CocktailCard({
+  const CocktailCard({
+    super.key,
     required this.name,
     required this.thumbnailUrl,
     required this.difficulty,
   });
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-      width: 100,
-      height: 180,
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: Colors.black,
+        color: Colors.grey[900],
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
-            color: Colors.purple.shade300.withOpacity(0.9),
-            offset: const Offset(
-              0.0,
-              10.0,
-            ),
-            blurRadius: 10.0,
-            spreadRadius: -6.0,
+            color: Colors.purple.shade300.withOpacity(0.4),
+            blurRadius: 6,
+            offset: const Offset(0, 1),
           ),
         ],
-        image: DecorationImage(
-          colorFilter: ColorFilter.mode(
-            Colors.black.withOpacity(0.35),
-            BlendMode.multiply,
-          ),
-          image: NetworkImage(thumbnailUrl),
-          fit: BoxFit.cover,
-        ),
       ),
-      child: Stack(
+      child: Row(
         children: [
-          Align(
-              alignment: Alignment.bottomRight,
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                padding: EdgeInsets.symmetric(horizontal: 5.0),
-                decoration: BoxDecoration(
-                  color: Colors.black
-                      .withOpacity(0.7), // Background color with opacity
-                  borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(15.0),
-                      bottomLeft: Radius.circular(15.0)),
-                ),
-                child: Text(
+          ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Image.network(
+              thumbnailUrl,
+              height: 80,
+              width: 80,
+              fit: BoxFit.cover,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
                   name,
                   style: GoogleFonts.montserrat(
-                    textStyle: const TextStyle(
-                      fontSize: 15,
-                      color: Colors.white,
-                    ),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
                   ),
-                  overflow: TextOverflow.ellipsis,
                   maxLines: 2,
-                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
                 ),
-              )),
-          // Align(
-          //   child: Padding(
-          //     padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-          //     child: Text(
-          //       portion,
-          //       style: TextStyle(fontSize: 19, color: Colors.white),
-          //       overflow: TextOverflow.ellipsis,
-          //       maxLines: 2,
-          //       textAlign: TextAlign.center,
-          //     ),
-          //   ),
-          //   alignment: Alignment.topLeft,
-          // ),
-          Align(
-            alignment: Alignment.topLeft,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  padding: EdgeInsets.all(5),
-                  margin: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.4),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.star,
-                        color: Colors.yellow,
-                        size: 18,
-                      ),
-                      SizedBox(width: 7),
-                      Text(
-                        difficulty,
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
+                const SizedBox(height: 6),
+                Row(
+                  children: [
+                    const Icon(Icons.star, color: Colors.yellow, size: 16),
+                    const SizedBox(width: 5),
+                    Text(
+                      difficulty,
+                      style: const TextStyle(color: Colors.white70),
+                    ),
+                  ],
                 ),
-                // Container(
-                //   padding: EdgeInsets.all(5),
-                //   margin: EdgeInsets.all(10),
-                //   decoration: BoxDecoration(
-                //     color: Colors.black.withOpacity(0.4),
-                //     borderRadius: BorderRadius.circular(15),
-                //   ),
-                // child: Row(
-                //   children: [
-                //     Icon(
-                //       Icons.schedule,
-                //       color: Colors.yellow,
-                //       size: 18,
-                //     ),
-                //     SizedBox(width: 7),
-                //     Text(
-                //       time,
-                //       style: TextStyle(
-                //         color: Colors.white,
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                // )
               ],
             ),
-            // alignment: Alignment.bottomLeft,
-          ),
+          )
         ],
       ),
     );

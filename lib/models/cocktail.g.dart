@@ -20,19 +20,22 @@ class CocktailAdapter extends TypeAdapter<Cocktail> {
       title: fields[0] as String,
       thumbnailUrl: fields[1] as String,
       difficulty: fields[2] as String,
+      id: fields[3] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, Cocktail obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
       ..write(obj.thumbnailUrl)
       ..writeByte(2)
-      ..write(obj.difficulty);
+      ..write(obj.difficulty)
+      ..writeByte(3)
+      ..write(obj.id);
   }
 
   @override

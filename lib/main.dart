@@ -1,17 +1,25 @@
+import 'dart:developer';
+
 import 'package:_cocktails/models/cocktail.dart';
+import 'package:_cocktails/models/cocktail_api.dart';
 import 'package:_cocktails/screens/home_screen.dart';
 import 'package:_cocktails/services/cocktail_service.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
-  CocktailService cocktailService = CocktailService();
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   Hive.registerAdapter(CocktailAdapter());
-  await Hive.openBox<Cocktail>('quickcocktaildb');
 
-  await cocktailService.getAndSaveCocktails();
+  // CocktailService cocktailService = CocktailService();
+
+  await Hive.openBox<Cocktail>('quickcocktaildb');
+  // final Box<Cocktail> box = Hive.box('quickcocktaildb');
+  // log(box.toString());
+
+  // await cocktailService.getAndSaveCocktails();
 
   runApp(const MyApp());
 }

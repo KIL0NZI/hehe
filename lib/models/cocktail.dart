@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:hive/hive.dart';
 
 part 'cocktail.g.dart';
@@ -13,16 +15,26 @@ class Cocktail extends HiveObject {
   @HiveField(2)
   final String difficulty;
 
+  @HiveField(3)
+  final String id;
+
+
   Cocktail({
     required this.title,
     required this.thumbnailUrl,
     required this.difficulty,
+    required this.id
   });
 
   factory Cocktail.fromJson(Map<String, dynamic> json) {
+      if (json['id'] == null) {
+    log('⚠️ Missing ID in cocktail JSON: $json');
+  }
     return Cocktail(
         title: json['title'],
         thumbnailUrl: json['image'],
-        difficulty: json['difficulty']);
+        difficulty: json['difficulty'],
+        id: json['id'],
+);
   }
 }

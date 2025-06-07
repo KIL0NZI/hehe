@@ -11,6 +11,7 @@ class CocktailService {
 
       final response = await CocktailApi().getCocktail();
 
+      cocktailBox.clear();
       for (int i = 0; i < response.length; i++) {
         await cocktailBox.put('cocktail_$i', response[i]);
       }

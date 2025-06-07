@@ -1,7 +1,9 @@
 // import 'package:cock_tails/models/cocktail_api.dart';
 import 'package:_cocktails/models/cocktail_api.dart';
 import 'package:_cocktails/cards/cocktail_card.dart';
+import 'package:_cocktails/models/cocktail_recipe_api.dart';
 import 'package:_cocktails/screens/nav_drawer.dart';
+import 'package:_cocktails/screens/recipe_screen.dart';
 import 'package:_cocktails/services/cocktail_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -63,79 +65,93 @@ class HomescreenState extends State<Homescreen> {
             )
           ]),
         ),
-        body: Center(
+        body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(
                 height: 30,
               ),
-              Stack(
-                children: [
-                  Container(
-                    width: 380,
-                    height: 280,
-                    decoration: BoxDecoration(
+              GestureDetector(
+                onTap: () async {
+                  await CocktailRecipeApi().getCocktail(id: randomCocktail?.id);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => RecipeScreen(
+                              cocktailId: randomCocktail?.id ?? '2')));
+                },
+                child: Stack(
+                  children: [
+                    Container(
+                      width: 380,
+                      height: 280,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(35),
+                          image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image:
+                                  NetworkImage(randomCocktail!.thumbnailUrl))),
+                    ),
+                    Container(
+                      width: 380,
+                      height: 280,
+                      decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(35),
-                        image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: NetworkImage(randomCocktail!.thumbnailUrl))),
-                  ),
-                  Container(
-                    width: 380,
-                    height: 280,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(35),
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          Colors.black.withOpacity(.95),
-                          Colors.transparent, // Dark at the bottom
-                        ],
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            Colors.black.withOpacity(.95),
+                            Colors.transparent, // Dark at the bottom
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  Positioned(
-                      top: 20,
-                      left: 20,
-                      child: Text(
-                        "Cocktail Of The Day",
-                        style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w100),
-                      )),
-                  Positioned(
-                    top: 60,
-                    left: 30,
-                    child: Text(
-                      randomCocktail!.title,
-                      style: GoogleFonts.montserrat(
-                          textStyle: const TextStyle(
-                              fontSize: 25.0,
+                    Positioned(
+                        top: 20,
+                        left: 20,
+                        child: Text(
+                          "Cocktail Of The Day",
+                          style: TextStyle(
+                              fontSize: 20,
                               color: Colors.white,
-                              fontWeight: FontWeight.bold)),
-                    ),
-                  ),
-                  Positioned(
-                      top: 90,
+                              fontWeight: FontWeight.w100),
+                        )),
+                    Positioned(
+                      top: 60,
                       left: 30,
-                      child: Row(
-                        children: [
-                          Text(
-                            'Difficulty: ',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w300,
-                                color: Colors.white),
-                          ),
-                          Text(randomCocktail!.difficulty,
-                              style: GoogleFonts.montserrat(
-                                  textStyle: const TextStyle(
-                                      fontSize: 15.0, color: Colors.yellow))),
-                        ],
-                      ))
-                ],
+                      child: Container(
+                        width: 350,
+                        child: Text(randomCocktail!.title,
+                            style: GoogleFonts.montserrat(
+                                textStyle: const TextStyle(
+                                    fontSize: 25.0,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold)),
+                            softWrap: true,
+                            overflow: TextOverflow.ellipsis),
+                      ),
+                    ),
+                    Positioned(
+                        top: 90,
+                        left: 30,
+                        child: Row(
+                          children: [
+                            Text(
+                              'Difficulty: ',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w300,
+                                  color: Colors.white),
+                            ),
+                            Text(randomCocktail!.difficulty,
+                                style: GoogleFonts.montserrat(
+                                    textStyle: const TextStyle(
+                                        fontSize: 15.0, color: Colors.yellow))),
+                          ],
+                        ))
+                  ],
+                ),
               ),
               SizedBox(
                 height: 30,
@@ -194,16 +210,28 @@ class HomescreenState extends State<Homescreen> {
                     SizedBox(
                       width: 70,
                     ),
-                    Container(
-                      width: 50,
-                      height: 50,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: Colors.pink.shade400),
-                      child: Icon(
-                        Icons.arrow_outward,
-                        color: Colors.white,
-                        size: 40,
+                    GestureDetector(
+                      onTap: () async {
+                        int randomNumber = 1 + random.nextInt(131);
+                        await CocktailRecipeApi()
+                            .getCocktail(id: randomNumber.toString());
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => RecipeScreen(
+                                    cocktailId: randomNumber.toString())));
+                      },
+                      child: Container(
+                        width: 50,
+                        height: 50,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: Colors.pink.shade400),
+                        child: Icon(
+                          Icons.arrow_outward,
+                          color: Colors.white,
+                          size: 40,
+                        ),
                       ),
                     )
                   ],
@@ -227,7 +255,7 @@ class HomescreenState extends State<Homescreen> {
               SizedBox(
                 height: 20,
               ),
-              Expanded(child: cocktailList())
+              cocktailList()
             ],
           ),
         ));
@@ -236,12 +264,24 @@ class HomescreenState extends State<Homescreen> {
   Widget cocktailList() {
     return ListView.builder(
         itemCount: cocktailBox.length,
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
           final cocktail = cocktailBox.getAt(index);
-          return CocktailCard(
-            name: cocktail?.title ?? 'err',
-            thumbnailUrl: cocktail?.thumbnailUrl ?? 'err',
-            difficulty: cocktail?.difficulty ?? 'err',
+          return GestureDetector(
+            onTap: () async {
+              await CocktailRecipeApi().getCocktail(id: cocktail?.id);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          RecipeScreen(cocktailId: cocktail?.id ?? '3')));
+            },
+            child: CocktailCard(
+              name: cocktail?.title ?? 'err',
+              thumbnailUrl: cocktail?.thumbnailUrl ?? 'err',
+              difficulty: cocktail?.difficulty ?? 'err',
+            ),
           );
         });
   }
